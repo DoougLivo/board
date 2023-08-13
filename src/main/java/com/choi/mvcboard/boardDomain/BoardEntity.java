@@ -1,8 +1,11 @@
 package com.choi.mvcboard.boardDomain;
 
+import jakarta.persistence.*;
 import lombok.*;
 
-import javax.persistence.*;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -18,7 +21,7 @@ public class BoardEntity {
     @Column(nullable = false)
     private String writer;
     private String contents;
-    private Date regdate;
+    private LocalDateTime regdate;
     private int hit;
 
     public static BoardEntity dtoToEntity(BoardDto dto) {

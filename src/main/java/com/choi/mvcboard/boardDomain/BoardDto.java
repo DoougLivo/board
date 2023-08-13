@@ -2,6 +2,8 @@ package com.choi.mvcboard.boardDomain;
 
 import lombok.*;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Data
@@ -12,7 +14,7 @@ public class BoardDto {
     private String title;
     private String writer;
     private String contents;
-    private Date regdate;
+    private LocalDateTime regdate;
     private int hit;
 
     public static BoardDto entityToDto(BoardEntity entity) {

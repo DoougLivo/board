@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BoardService {
@@ -23,8 +24,26 @@ public class BoardService {
     }
 
     public List<BoardDto> getList() {
-        List<BoardDto> list = new ArrayList<>();
-        list.add((BoardDto) boardDao.findAll());
-        return list;
+        List<BoardEntity> entityList = boardDao.findAll();
+
+        // BoardEntity를 BoardDto로 변환하고 새로운 리스트에 추가
+        List<BoardDto> dtoList = entityList.stream()
+                .map(this::convertEntityToDto)
+                .collect(Collectors.toList());
+
+        return dtoList;
+    }
+
+    private BoardDto convertEntityToDto(BoardEntity entity) {
+        BoardDto dto = new BoardDto();
+        dto.setId(entity.getId());
+        dto.setTitle(entity.getTitle());
+        dto.setWriter(entity.getWriter());
+        dto.setContents(entity.getContents());
+        dto.setRegdate(entity.getRegdate());
+        dto.setHit(entity.getHit());
+        // 나머지 필드도 필요에 따라 설정
+
+        return dto;
     }
 }

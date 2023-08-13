@@ -5,8 +5,10 @@ import com.choi.mvcboard.boardService.BoardService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class BoardController {
@@ -23,9 +25,19 @@ public class BoardController {
         return "board/boardWrite";
     }
 
-    @PutMapping("/write/insert")
-    public void boardWrite(BoardDto dto) {
-        boardService.insert(dto);
+    @PostMapping("/insert")
+    @ResponseBody
+    public Map<String, String> boardWrite(BoardDto dto) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            boardService.insert(dto);
+            map.put("ok", "등록 되었습니다.");
+            return map;
+        } catch (Exception e) {
+            map.put("fail", "fail");
+            e.printStackTrace();
+            return map;
+        }
     }
 
     @GetMapping("/boardList")
