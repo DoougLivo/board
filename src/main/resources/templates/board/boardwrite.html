@@ -42,6 +42,7 @@
             <div class="btn_wrap text-center">
                 <!--                    <a th:href="@{/board/list}" class="btn btn-secondary">뒤로 가기</a>-->
                 <input type="button" id="writeBtn" class="btn btn-primary waves-effect waves-light" value="등록">
+                <button type="button" id="listBtn" onclick="goList()">목록</button>
             </div>
         </form>
     </div>
@@ -90,4 +91,8 @@ $(()=>{
         });
     });
 });
+
+function goList() {
+    location.href = "/boardList";
+}
 </script>

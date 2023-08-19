@@ -12,39 +12,36 @@
 <body>
 <div class="container">
     <h1>Board</h1>
-    <table class="rwd-table" style="width: 50%">
-        <tbody>
+    <table class="rwd-table" style="width: 40%">
+        <thead>
         <tr>
             <th>ID</th>
             <th>제목</th>
             <th>작성자</th>
-<!--            <th>내용</th>-->
             <th>작성일</th>
             <th>조회수</th>
         </tr>
+        </thead>
+        <tbody>
         <tr th:each="list : ${boardList}">
             <td data-th="Supplier Code" th:text="${list.id}">
-                UPS5005
             </td>
-            <td data-th="Supplier Name" th:text="${list.title}">
-                UPS
+            <td data-th="Supplier Name"><a th:text="${list.title}" th:href="@{/boardView/{id}(id = ${list.id})}" style="text-decoration: none; color: black;"></a>
             </td>
             <td data-th="Invoice Number" th:text="${list.writer}">
-                ASDF19218
             </td>
-<!--            <td data-th="Invoice Date" th:text="${list.contents}">-->
-<!--                06/25/2016-->
-<!--            </td>-->
-            <td data-th="Due Date" th:text="${list.regdate}">
-                12/25/2016
+            <td data-th="Due Date" th:text="${#strings.substring(list.regdate, 0, 10)}">
             </td>
             <td data-th="Net Amount" th:text="${list.hit}">
-                $8,322.12
             </td>
         </tr>
         </tbody>
     </table>
+    <div class="writeBtn" style="margin-top: 20px; margin-left: 37%;"><a href="/boardWrite" class="btn-gradient blue mini">글쓰기</a></div>
+
     <h3>Resize Me</h3>
 </div>
 </body>
+<script>
+</script>
 </html>

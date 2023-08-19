@@ -5,8 +5,9 @@ import com.choi.mvcboard.boardDomain.BoardEntity;
 import com.choi.mvcboard.boardRepository.BoardRepository;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -45,5 +46,12 @@ public class BoardService {
         // 나머지 필드도 필요에 따라 설정
 
         return dto;
+    }
+
+    public BoardDto getView(Long id) {
+//        System.out.println("test : " + boardDao.findById(id));
+        Optional<BoardEntity> entity = boardDao.findById(id);
+        Optional<BoardDto> dto = Optional.of(new BoardDto());
+        return dto.entityToDto(entity);
     }
 }

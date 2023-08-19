@@ -1,10 +1,11 @@
 package com.choi.mvcboard.boardDomain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
+import java.util.Optional;
 
 @Data
 @AllArgsConstructor
@@ -14,10 +15,10 @@ public class BoardDto {
     private String title;
     private String writer;
     private String contents;
-    private LocalDateTime regdate;
+    private LocalDateTime regdate = LocalDateTime.now();
     private int hit;
 
-    public static BoardDto entityToDto(BoardEntity entity) {
+    public static Optional<BoardDto> entityToDto(BoardEntity entity) {
         BoardDto dto = new BoardDto();
         dto.setId(entity.getId());
         dto.setTitle(entity.getTitle());
@@ -25,6 +26,6 @@ public class BoardDto {
         dto.setContents(entity.getContents());
         dto.setRegdate(entity.getRegdate());
         dto.setHit(entity.getHit());
-        return dto;
+        return Optional.of(dto);
     }
 }

@@ -45,4 +45,10 @@ public class BoardController {
         model.addAttribute("boardList", boardService.getList());
         return "board/boardList";
     }
+
+    @GetMapping("/boardView/{id}")
+    public String getView(Model model, @PathVariable("id") Long id) {
+        model.addAttribute("boardView", boardService.getView(id));
+        return "board/boardView";
+    }
 }
