@@ -21,7 +21,10 @@ public class BoardController {
     }
 
     @GetMapping("/boardWrite")
-    public String goWrite() {
+    public String goWrite(Model model, @RequestParam(name = "id", required = false) Long id) {
+        if (id != null) {
+            model.addAttribute("getView", boardService.getView(id));
+        }
         return "board/boardWrite";
     }
 
@@ -34,7 +37,7 @@ public class BoardController {
             map.put("ok", "등록 되었습니다.");
             return map;
         } catch (Exception e) {
-            map.put("fail", "fail");
+            map.put("fail", "실패");
             e.printStackTrace();
             return map;
         }
@@ -48,7 +51,41 @@ public class BoardController {
 
     @GetMapping("/boardView/{id}")
     public String getView(Model model, @PathVariable("id") Long id) {
+        boardService.updateHit(id);
         model.addAttribute("boardView", boardService.getView(id));
+        System.out.println("result : "+boardService.getView(id));
         return "board/boardView";
     }
+
+    @ResponseBody
+    @PostMapping("/boardView/delete")
+    public Map<String, String> boardDelete(Long id) {
+        Map<String, String> map = new HashMap<>();
+        System.out.println("con id : " + id);
+        try {
+            boardService.delete(id);
+            map.put("ok", "삭제 되었습니다.");
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("fail", "실패");
+            return map;
+        }
+    }
+
+    @PostMapping("/boardUpdate")
+    @ResponseBody
+    public Map<String, String> boardUpdate(BoardDto dto) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            boardService.update(dto);
+            map.put("ok", "수정 되었습니다.");
+            return map;
+        } catch (Exception e) {
+            e.printStackTrace();
+            map.put("fail", "실패");
+            return map;
+        }
+    }
+
 }

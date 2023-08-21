@@ -12,8 +12,8 @@
 <body>
 <div class="container">
     <h1>Board</h1>
-    <table class="rwd-table" style="width: 40%">
-        <thead>
+    <table class="rwd-table" style="width: 60%">
+        <tbody>
         <tr>
             <th>ID</th>
             <th>제목</th>
@@ -21,8 +21,6 @@
             <th>작성일</th>
             <th>조회수</th>
         </tr>
-        </thead>
-        <tbody>
         <tr th:each="list : ${boardList}">
             <td data-th="Supplier Code" th:text="${list.id}">
             </td>
@@ -30,7 +28,7 @@
             </td>
             <td data-th="Invoice Number" th:text="${list.writer}">
             </td>
-            <td data-th="Due Date" th:text="${#strings.substring(list.regdate, 0, 10)}">
+            <td data-th="Due Date" th:text="${#temporals.format(list.regdate, 'yyyy-MM-dd HH:mm:ss')}">
             </td>
             <td data-th="Net Amount" th:text="${list.hit}">
             </td>

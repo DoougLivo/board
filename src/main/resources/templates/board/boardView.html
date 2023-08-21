@@ -17,16 +17,41 @@
         <h2>board Content</h2>
 
         <div class="bg-white rounded shadow-sm">
-            <div class="board_title"><!--<c:out value="${boardContent.title}"/> !--></div>
-            <div class="board_info_box">
-                <span class="board_author"><!--<c:out value="${boardContent.reg_id}"/>,</span><span class="board_date"><c:out value="${boardContent.reg_dt}"/>!--></span>
-            </div>
-            <div class="board_content"><!--${boardContent.content}!--></div>
-            <div class="board_tag">TAG : <!--<c:out value="${boardContent.tag}"/>!--></div>
-        </div>
+            <th:block>
+                <table class="rwd-table" style="width: 60%">
+                    <tbody th:each="view : ${boardView}">
+                    <tr>
+                        <th>ID</th>
+                        <th>제목</th>
+                        <th>작성자</th>
+                        <th>내용</th>
+                        <th>작성일</th>
+                        <th>수정일</th>
+                        <th>조회수</th>
+                    </tr>
+                    <tr>
+                        <td data-th="Supplier Code" th:text="${view.id}" id="id">
+                        </td>
+                        <td data-th="Supplier Name" th:text="${view.title}">
+                        </td>
+                        <td data-th="Invoice Number" th:text="${view.writer}">
+                        </td>
+                        <td data-th="Invoice Number" th:text="${view.contents}">
+                        </td>
+                        <td data-th="Due Date" th:text="${#temporals.format(view.regdate, 'yyyy-MM-dd HH:mm:ss')}">
+                        </td>
+                        <td data-th="Due Date" th:text="${#temporals.format(view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">
+                        </td>
+                        <td data-th="Net Amount" th:text="${view.hit}">
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
 
+            </th:block>
+        </div>
         <div style="margin-top : 20px">
-            <button type="button" class="btn btn-sm btn-primary" id="btnUpdate">수정</button>
+            <button type="button" class="btn btn-sm btn-primary" id="btnUpdate" onclick="goUpdate()">수정</button>
             <button type="button" class="btn btn-sm btn-primary" id="btnDelete">삭제</button>
             <button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="goList()">목록</button>
         </div>
@@ -36,13 +61,38 @@
 
 </body>
 <script>
-    <!--    $(document).on('click', '#btnList', function(){-->
+$(()=>{
+    $("#btnDelete").click(()=>{
+        let id = $("#id").text();
+		console.log('id : ' + id);
 
-    <!--        location.href = "${pageContext.request.contextPath}/board/getBoardList";-->
+        $.ajax({
+            url:"/boardView/delete",
+            data:{id:id},
+            dataType:"json",
+            method:"post"
+        })
+        .done((res)=>{
+            console.log(res);
+            alert(res.ok);
+            location.href="/boardList";
+        })
+        .fail((res, status, error)=>{
+            console.log(status);
+            console.log(error);
+        });
+    });
+});
 
-    <!--    });-->
 function goList() {
     location.href = "/boardList";
+}
+
+function goUpdate() {
+    let id = $("#id").text();
+	console.log('id : ' + id);
+
+    location.href = "/boardWrite?id=" + id;
 }
 </script>
 </html>

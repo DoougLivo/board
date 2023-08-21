@@ -20,7 +20,9 @@ public class BoardEntity {
     @Column(nullable = false)
     private String writer;
     private String contents;
+    @Column(nullable = false, updatable = false)
     private LocalDateTime regdate = LocalDateTime.now();
+    private LocalDateTime updateDate;
     private int hit;
 
     public static BoardEntity dtoToEntity(BoardDto dto) {
@@ -30,6 +32,9 @@ public class BoardEntity {
         entity.setWriter(dto.getWriter());
         entity.setContents(dto.getContents());
         entity.setRegdate(dto.getRegdate());
+//        System.out.println("asd : " + dto.getUpdateDate());
+        entity.setUpdateDate(dto.getUpdateDate());
+//        System.out.println("qwe : " + entity.getUpdateDate());
         entity.setHit(dto.getHit());
         return entity;
     }
