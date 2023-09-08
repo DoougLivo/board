@@ -4,55 +4,71 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="../../static/style.css">
+    <link rel="stylesheet" type="text/css" href="../../static/viewstyle.css">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
-<!--    <nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top" th:replace="fragments/common :: menu('home')"></nav>-->
+<div class="nav">
+    <a href="join" th:if="${session.member == null}">회원가입</a>&nbsp;&nbsp;
+    <a href="login" th:if="${session.member == null}">로그인</a>&nbsp;&nbsp;
+    <span th:if="${session.member != null}" th:text="${session.userName + '님'}"></span>&nbsp;&nbsp;
+    <a href="/logout" th:if="${session.member != null}">로그아웃</a>
+</div>
 
 <div class="container">
     <div class="page-header">
-        <h1 th:if="${getView == null}">게시글 등록</h1>
-        <h1 th:if="${getView != null}">게시글 수정</h1>
+        <h2 style="text-align: center" th:if="${getView == null}">게시글 등록</h2>
+        <h2 style="text-align: center" th:if="${getView != null}">게시글 수정</h2>
     </div>
-    <div class="starter-template">
-        <form class="form-horizontal" id="writeFrm" name="writeFrm">
-            <div class="form-group">
-<!--                <label style="float: left" for="title" class="col-sm-2 control-label">제목</label>-->
-                <div class="col-sm-10" style="margin-top: 10px;">
-                    <input type="hidden" id="id" name="id" th:value="${getView != null ? getView.id : ''}"/>
-                    <input type="text" class="form-control" id="title" name="title" th:value="${getView != null ? getView.title : ''}" placeholder="제목"/>
-                </div>
-            </div>
-
-            <div class="form-group">
-<!--                <label style="float: left" for="writer" class="col-sm-2 control-label">작성자</label>-->
-                <div class="col-sm-10" style="margin-top: 10px;">
-                    <input type="text" class="form-control" id="writer" name="writer" th:value="${getView != null ? getView.writer : ''}" th:readonly="${getView != null}" placeholder="작성자"/><br><br>
-                </div>
-            </div>
-
-            <div class="form-group">
-<!--                <label style="float: left" for="contents" class="col-sm-2 control-label">내용</label>-->
-                <div class="col-sm-10">
-                    <textarea class="form-control" id="contents" name="contents" th:text="${getView != null ? getView.contents : ''}" placeholder="내용을 입력해 주세요."></textarea><br><br>
-                </div>
-            </div>
-            <div class="btn_wrap text-center">
-                <!--                    <a th:href="@{/board/list}" class="btn btn-secondary">뒤로 가기</a>-->
-                <input type="button" id="writeBtn" class="btn btn-primary waves-effect waves-light" th:if="${getView == null}" value="등록">
-                <input type="button" id="updateBtn" class="btn btn-primary waves-effect waves-light" th:if="${getView != null}" value="수정">
-                <button type="button" id="listBtn" onclick="goList()">목록</button>
-            </div>
-        </form>
+    <form class="form-horizontal" id="writeFrm" name="writeFrm">
+    <table class="board_detail" style="width: 60%; margin: auto;">
+        <colgroup>
+            <col width="15%"/>
+            <col width="35%"/>
+            <col width="15%"/>
+            <col width="35%"/>
+        </colgroup>
+        <caption>게시글 쓰기</caption>
+        <tbody>
+        <input type="hidden" id="id" name="id" th:value="${getView != null ? getView.id : ''}"/>
+        <input type="hidden" id="hit" name="hit" th:value="${getView != null ? getView.hit : 0}"/>
+        <tr>
+            <th scope="row">제목</th>
+            <td colspan="3">
+                <input type="text" class="form-control" id="title" name="title" th:value="${getView != null ? getView.title : ''}" placeholder="제목"/>
+            </td>
+        </tr>
+        <tr>
+            <th scope="row">작성자</th>
+            <td>
+                <input type="text" class="form-control" id="writer" name="writer" th:value="${getView != null ? getView.writer : session.member != null ? session.userName : ''}" th:readonly="${getView != null || session.userName != null}" placeholder="작성자"/>
+            </td>
+            <th scope="row">파일첨부</th>
+            <td>파일</td>
+        </tr>
+        <tr>
+            <td colspan="4" class="view_text">
+                <textarea class="form-control" id="contents" name="contents" th:text="${getView != null ? getView.contents : ''}" placeholder="내용을 입력해 주세요."></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="btn_wrap text-center" style="width: 60%; margin: auto; margin-top : 20px; text-align: right;">
+        <input type="button" id="writeBtn" class="btn btn-primary waves-effect waves-light" th:if="${getView == null}"
+               value="등록">
+        <input type="button" id="updateBtn" class="btn btn-primary waves-effect waves-light" th:if="${getView != null}"
+               value="수정">
+        <button type="button" class="btn btn-sm btn-primary" id="listBtn" onclick="goList()">목록</button>
     </div>
+    </form>
 </div>
+
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+<!--    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>-->
+<!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>-->
 </body>
 </html>
 <script>
@@ -61,10 +77,12 @@ $(()=>{
         let id = $("#id").val();
         let title = $("#title").val();
 		let contents = $("#contents").val();
+		let hit = $("#hit").val();
         let frm = $("#writeFrm").serialize();
         console.log(id);
         console.log(title);
         console.log(contents);
+        console.log(hit);
         console.log(frm);
 
         if (title=="") {
@@ -98,6 +116,7 @@ $(()=>{
 
     $("#writeBtn").click(()=>{
         let title = $("#title").val();
+        let writer = $("#writer").val();
 		let contents = $("#contents").val();
         let frm = $("#writeFrm").serialize();
         console.log(title);
@@ -109,7 +128,7 @@ $(()=>{
             $("#title").focus();
             return;
         }
-         if (contents=="") {
+        if (contents=="") {
             alert("글을 입력하세요");
             $("#contents").focus();
             return;

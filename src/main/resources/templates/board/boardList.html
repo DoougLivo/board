@@ -9,13 +9,22 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
-<body>
+<body style="padding-top: 20px;">
+
+
+
 <div class="container">
+    <div class="nav">
+        <a href="join" th:if="${session.member == null}">회원가입</a>&nbsp;&nbsp;
+        <a href="login" th:if="${session.member == null}">로그인</a>&nbsp;&nbsp;
+        <span th:if="${session.member != null}" th:text="${session.userName + '님'}"></span>&nbsp;&nbsp;
+        <a href="/logout" th:if="${session.member != null}">로그아웃</a>
+    </div>
     <h1>Board</h1>
     <table class="rwd-table" style="width: 60%">
         <tbody>
         <tr>
-            <th>ID</th>
+            <th>글 번호</th>
             <th>제목</th>
             <th>작성자</th>
             <th>작성일</th>
@@ -37,7 +46,38 @@
     </table>
     <div class="writeBtn" style="margin-top: 20px; margin-left: 37%;"><a href="/boardWrite" class="btn-gradient blue mini">글쓰기</a></div>
 
-    <h3>Resize Me</h3>
+<!--    <h3>Resize Me</h3>-->
+
+<!--    <nav style="text-align: center;">-->
+<!--        <ul class="pagination">-->
+<!--            <li class="disabled">-->
+<!--                <a href="#" aria-label="First">-->
+<!--                    <span aria-hidden="true">First</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="disabled">-->
+<!--                <a href="#" aria-label="Previous">-->
+<!--                    <span aria-hidden="true">&lt;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li class="active"><a href="#">1</a></li>-->
+<!--            <li><a href="#">2</a></li>-->
+<!--            <li><a href="#">3</a></li>-->
+<!--            <li><a href="#">4</a></li>-->
+<!--            <li><a href="#">5</a></li>-->
+<!--            <li>-->
+<!--                <a href="#" aria-label="Next">-->
+<!--                    <span aria-hidden="true">&gt;</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--            <li>-->
+<!--                <a href="#" aria-label="Last">-->
+<!--                    <span aria-hidden="true">Last</span>-->
+<!--                </a>-->
+<!--            </li>-->
+<!--        </ul>-->
+<!--    </nav>-->
+
 </div>
 </body>
 <script>

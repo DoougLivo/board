@@ -257,10 +257,17 @@ body {
 
 }
 
-/*a {
+.nav {
+    width: 60%;
+    text-align: right;
+    margin: auto;
+    font-size: 14px;
+}
+
+a, span {
   text-decoration: none;
-  color: black;
-}*/
+  color: white;
+}
 
 /*
 Don't look at this last part. It's unnecessary. I was just playing with pixel gradients... Don't judge.

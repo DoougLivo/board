@@ -4,95 +4,108 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/static/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
+    <link rel="stylesheet" type="text/css" href="/static/viewstyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"
+            integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+            integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+            crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 </head>
 <body>
+<div class="nav">
+    <a href="join" th:if="${session.member == null}">회원가입</a>&nbsp;&nbsp;
+    <a href="login" th:if="${session.member == null}">로그인</a>&nbsp;&nbsp;
+    <span th:if="${session.member != null}" th:text="${session.userName + '님'}"></span>&nbsp;&nbsp;
+    <a href="/logout" th:if="${session.member != null}">로그아웃</a>
+</div>
 
-<article>
-    <div class="container" role="main">
-
-        <h2>board Content</h2>
-
-        <div class="bg-white rounded shadow-sm">
-            <th:block>
-                <table class="rwd-table" style="width: 60%">
-                    <tbody th:each="view : ${boardView}">
-                    <tr>
-                        <th>ID</th>
-                        <th>제목</th>
-                        <th>작성자</th>
-                        <th>내용</th>
-                        <th>작성일</th>
-                        <th>수정일</th>
-                        <th>조회수</th>
-                    </tr>
-                    <tr>
-                        <td data-th="Supplier Code" th:text="${view.id}" id="id">
-                        </td>
-                        <td data-th="Supplier Name" th:text="${view.title}">
-                        </td>
-                        <td data-th="Invoice Number" th:text="${view.writer}">
-                        </td>
-                        <td data-th="Invoice Number" th:text="${view.contents}">
-                        </td>
-                        <td data-th="Due Date" th:text="${#temporals.format(view.regdate, 'yyyy-MM-dd HH:mm:ss')}">
-                        </td>
-                        <td data-th="Due Date" th:text="${#temporals.format(view.updateDate, 'yyyy-MM-dd HH:mm:ss')}">
-                        </td>
-                        <td data-th="Net Amount" th:text="${view.hit}">
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
-
-            </th:block>
-        </div>
-        <div style="margin-top : 20px">
-            <button type="button" class="btn btn-sm btn-primary" id="btnUpdate" onclick="goUpdate()">수정</button>
-            <button type="button" class="btn btn-sm btn-primary" id="btnDelete">삭제</button>
-            <button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="goList()">목록</button>
-        </div>
-
+<div class="container">
+    <h2 style="text-align: center">게시글 상세 화면</h2>
+    <table class="board_detail" style="width: 60%; margin: auto;">
+        <colgroup>
+            <col width="15%"/>
+            <col width="35%"/>
+            <col width="15%"/>
+            <col width="35%"/>
+        </colgroup>
+        <caption>게시글 상세내용</caption>
+        <tbody>
+        <tr>
+            <th scope="row">글 번호</th>
+            <td th:text="${boardView.id}" id="id"></td>
+            <th scope="row">조회수</th>
+            <td th:text="${boardView.hit}"></td>
+        </tr>
+        <tr>
+            <th scope="row">작성자</th>
+            <td th:text="${boardView.writer}"></td>
+            <th scope="row">작성일</th>
+            <td th:text="${#temporals.format(boardView.regdate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        <tr>
+            <th scope="row">파일첨부</th>
+            <td>파일</td>
+            <th scope="row">수정일</th>
+            <td th:text="${#temporals.format(boardView.updateDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
+        </tr>
+        <tr>
+            <th scope="row">제목</th>
+            <td colspan="3">
+                <input type="text" id="title" name="title"
+                       th:value="${boardView.title}" readonly/>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" class="view_text">
+							<textarea title="내용" id="contents" name="contents"
+                                      th:text="${boardView.contents}" readonly></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <div style="width: 60%; margin: auto; margin-top : 20px; text-align: right;">
+        <button type="button" class="btn btn-sm btn-primary" id="btnUpdate" onclick="goUpdate()">수정</button>
+        <button type="button" class="btn btn-sm btn-primary" id="btnDelete">삭제</button>
+        <button type="button" class="btn btn-sm btn-primary" id="btnList" onclick="goList()">목록</button>
     </div>
-</article>
+</div>
 
 </body>
 <script>
-$(()=>{
-    $("#btnDelete").click(()=>{
-        let id = $("#id").text();
-		console.log('id : ' + id);
+    $(()=>{
+        $("#btnDelete").click(()=>{
+            let id = $("#id").text();
+            console.log('id : ' + id);
 
-        $.ajax({
-            url:"/boardView/delete",
-            data:{id:id},
-            dataType:"json",
-            method:"post"
-        })
-        .done((res)=>{
-            console.log(res);
-            alert(res.ok);
-            location.href="/boardList";
-        })
-        .fail((res, status, error)=>{
-            console.log(status);
-            console.log(error);
+            $.ajax({
+                url:"/boardView/delete",
+                data:{id:id},
+                dataType:"json",
+                method:"post"
+            })
+            .done((res)=>{
+                console.log(res);
+                alert(res.ok);
+                location.href="/boardList";
+            })
+            .fail((res, status, error)=>{
+                console.log(status);
+                console.log(error);
+            });
         });
     });
-});
 
-function goList() {
-    location.href = "/boardList";
-}
+    function goList() {
+        location.href = "/boardList";
+    }
 
-function goUpdate() {
-    let id = $("#id").text();
-	console.log('id : ' + id);
+    function goUpdate() {
+        let id = $("#id").text();
+        console.log('id : ' + id);
 
-    location.href = "/boardWrite?id=" + id;
-}
+        location.href = "/boardWrite?id=" + id;
+    }
 </script>
 </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>비밀번호 찾기</title>
+    <link rel="stylesheet" href="/static/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <h2>비밀번호 찾기</h2>
+    <form id="findPwFrm">
+        <input type="text" name="userId" id="userId" placeholder="아이디"/>
+        <input type="email" name="email" id="email" placeholder="이메일"/>
+        <span id="findUserPw"></span>
+        <input type="button" id="findPwBtn" value="찾기"/>
+    </form>
+    <a href="/findId">아이디 찾기</a>&nbsp;&nbsp;ㅣ&nbsp;&nbsp;
+    <a href="/login">로그인</a>&nbsp;&nbsp;ㅣ&nbsp;&nbsp;
+    <a href="/join">회원가입</a>
+</div>
+
+</body>
+</html>
+<script>
+    $(()=>{
+        $("#findPwBtn").click(()=>{
+            let userId = $("#userId").val().trim();
+            let email = $("#email").val().trim();
+            let frm = $("#findPwFrm").serialize();
+
+            console.log(userId);
+            console.log(email);
+            console.log(frm);
+
+            if (userId=="") {
+                alert("아이디를 입력하세요");
+                $("#userId").focus();
+                return;
+            }
+            if (email=="") {
+                alert("이메일을 입력하세요");
+                $("#email").focus();
+                return;
+            }
+
+            $.ajax({
+                url:"/findPw_proc",
+                data:frm,
+                dataType:"json",
+                method:"post"
+            })
+            .done((res)=>{
+                console.log(res);
+                if (res.not != null) {
+                    alert(res.not);
+                    $("#userId").focus();
+                }
+                if (res.ok != null) {
+                    $("#findUserPw").text('비밀번호는 ' + res.ok + ' 입니다');
+                }
+            })
+            .fail((res, status, error)=>{
+                console.log(status);
+                console.log(error);
+            });
+        });
+    });
+</script>

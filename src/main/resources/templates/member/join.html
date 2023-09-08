@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입</title>
+    <link rel="stylesheet" href="/static/join.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+
+<div>
+    <div class="container">
+        <h2>회원가입</h2>
+        <form id="joinFrm">
+            <label for="userId">* 아이디<br>
+                <input type="text" id="userId" name="userId" class="userId" maxlength="30"><br><br>
+            </label>
+            <label for="passwd">* 비밀번호<br>
+                <input class="pw" id="passwd" name="passwd" type="password" maxlength="30"><br><br>
+            </label>
+            <label for="passwd2">* 비밀번호 확인<br>
+                <input class="pw" id="passwd2" type="password" maxlength="30"><br><br> </label>
+            <label for="email">* 이메일<br>
+                <input type="email" id="email" name="email" maxlength="30"><br><br>
+            </label>
+            <label for="userName">* 이름<br>
+                <input type="text" id="userName" name="userName" maxlength="30"><br><br>
+            </label>
+            <label for="birth">* 생년월일 8자리<br>
+                <input type="text" id="birth" name="birth" maxlength="10"><br><br>
+            </label>
+            <label for="phone">* 전화번호<br>
+                <input type="tel" id="phone" name="phone" maxlength="13"><br><br>
+            </label>
+
+            <!-- 선택 영역 두번째 -->
+            <!-- name을 부여함으로 인하여 radio의 선택 가능한 것들을 하나의 그룹으로 묶어준다. -->
+            <input type="radio" class="radio" name="gender">&nbsp 남성
+            <input type="radio" class="radio" name="gender">&nbsp 여성
+        </form>
+        <br><br>
+        <form>
+            <input type="checkbox" class="agree">&nbsp 이용약관 개인정보 수집 및 정보이용에 동의합니다.
+        </form>
+        <hr>
+        <hr>
+        <button id="joinBtn">가입하기</button>
+    </div>
+</div>
+
+</body>
+<script>
+$(()=>{
+    $("#joinBtn").click(()=>{
+        let userId = $("#userId").val().trim();
+        let passwd = $("#passwd").val().trim();
+        let passwd2 = $("#passwd2").val().trim();
+        let email = $("#email").val().trim();
+        let userName = $("#userName").val().trim();
+        let birth = $("#birth").val().trim();
+        let phone = $("#phone").val().trim();
+        let gender = $("#gender").val();
+        let frm = $("#joinFrm").serialize();
+        
+        console.log(frm);
+        
+        if (userId=="") {
+            alert("아이디를 입력하세요");
+            $("#userId").focus();
+            return;
+        }
+        if (passwd=="") {
+            alert("비밀번호를 입력하세요");
+            $("#passwd").focus();
+            return;
+        }
+        if (passwd2=="") {
+            alert("비밀번호 확인을 입력하세요");
+            $("#passwd2").focus();
+            return;
+        } else if (passwd2!=passwd) {
+            alert("비밀번호 확인이 틀립니다");
+            $("#passwd2").focus();
+            return;
+        }
+        if (email=="") {
+            alert("이메일을 입력하세요");
+            $("#email").focus();
+            return;
+        }
+        if (userName=="") {
+            alert("이름을 입력하세요");
+            $("#userName").focus();
+            return;
+        }
+        if (birth=="") {
+            alert("생년월일을 입력하세요");
+            $("#birth").focus();
+            return;
+        }
+        if (phone=="") {
+            alert("전화번호를 입력하세요");
+            $("#phone").focus();
+            return;
+        }
+        if (gender=="") {
+            alert("성별을 선택하세요");
+            $("#gender").focus();
+            return;
+        }
+
+        $.ajax({
+            url:"/joinMember",
+            data:frm,
+            dataType:"json",
+            method:"post"
+        })
+        .done((res)=>{
+            console.log(res);
+            alert(res.ok);
+            location.href="/boardList";
+        })
+        .fail((res, status, error)=>{
+            console.log(status);
+            console.log(error);
+        });
+    });
+});
+</script>
+</html>
+

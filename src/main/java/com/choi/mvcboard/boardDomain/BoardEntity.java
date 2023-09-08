@@ -32,9 +32,7 @@ public class BoardEntity {
         entity.setWriter(dto.getWriter());
         entity.setContents(dto.getContents());
         entity.setRegdate(dto.getRegdate());
-//        System.out.println("asd : " + dto.getUpdateDate());
         entity.setUpdateDate(dto.getUpdateDate());
-//        System.out.println("qwe : " + entity.getUpdateDate());
         entity.setHit(dto.getHit());
         return entity;
     }

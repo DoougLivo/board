@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>로그인</title>
+    <link rel="stylesheet" href="/static/login.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+<body>
+
+<div class="login-wrapper">
+    <h2>로그인</h2>
+    <form id="loginFrm">
+        <input type="text" name="userId" id="userId" placeholder="아이디"/>
+        <input type="password" name="passwd" id="passwd" placeholder="비밀번호"/>
+        <label for="remember-check">
+            <input type="checkbox" id="remember-check"/>아이디 저장하기
+        </label>
+        <input type="button" id="loginBtn" value="로그인"/>
+    </form>
+    <a href="/findPw">비밀번호 찾기</a>&nbsp;&nbsp;ㅣ&nbsp;&nbsp;
+    <a href="/findId">아이디 찾기</a>&nbsp;&nbsp;ㅣ&nbsp;&nbsp;
+    <a href="/join">회원가입</a>
+</div>
+
+</body>
+</html>
+<script>
+    $(()=>{
+        $("#loginBtn").click(()=>{
+            let userId = $("#userId").val().trim();
+            let passwd = $("#passwd").val().trim();
+            let frm = $("#loginFrm").serialize();
+
+            if (userId=="") {
+                alert("아이디를 입력하세요");
+                $("#userId").focus();
+                return;
+            }
+            if (passwd=="") {
+                alert("비밀번호를 입력하세요");
+                $("#passwd").focus();
+                return;
+            }
+
+            $.ajax({
+                url:"/loginMember",
+                data:frm,
+                dataType:"json",
+                method:"post"
+            })
+            .done((res)=>{
+                console.log(res);
+                if (res.not != null) {
+                    alert(res.not);
+                    $("#userId").focus();
+                }
+                if (res.ok != null) {
+                    alert(res.ok);
+                    location.href="/boardList";
+                }
+            })
+            .fail((res, status, error)=>{
+                console.log(status);
+                console.log(error);
+            });
+        });
+    });
+</script>

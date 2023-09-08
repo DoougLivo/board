@@ -66,9 +66,7 @@ public class BoardService {
         System.out.println("service dto : " + dto);
         BoardEntity entity = new BoardEntity();
         dto.setUpdateDate(LocalDateTime.now());
-//        System.out.println("디티오 : " + dto.getUpdateDate());
         BoardEntity entity2 = entity.dtoToEntity(dto);
         boardDao.save(entity2);
-//        System.out.println("저장후 : " + entity2.getUpdateDate());
     }
 }
