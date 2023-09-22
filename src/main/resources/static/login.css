@@ -59,7 +59,20 @@ body{
     background-size: contain;
 }
 
+.nav {
+    text-align: center;
+    width: 320px;
+    margin: auto;
+    margin-top: 20px;
+}
+
 a, span {
     text-decoration: none;
     color: black;
+}
+
+.board {
+    font-size: 24px;
+    color: #6A24FE;
+    font-weight: bold;
 }

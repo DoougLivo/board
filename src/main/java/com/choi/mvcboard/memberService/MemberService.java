@@ -58,4 +58,13 @@ public class MemberService {
         }
     }
 
+    public int idCheck(String userId) {
+        Optional<MemberEntity> entity = memberDao.findById(userId);
+        System.out.println("idcheck service : " + entity);
+        if (!entity.isPresent()) {
+            return 1;
+        } else {
+            return -1;
+        }
+    }
 }

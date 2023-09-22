@@ -15,7 +15,8 @@
         <h2>회원가입</h2>
         <form id="joinFrm">
             <label for="userId">* 아이디<br>
-                <input type="text" id="userId" name="userId" class="userId" maxlength="30"><br><br>
+                <input type="text" style="width: 88%;" id="userId" name="userId" class="userId" maxlength="30"><br><br>
+<!--                <button type="button" id="idCheck" style="width: 10%; height: 5%;">체크</button><br><br>-->
             </label>
             <label for="passwd">* 비밀번호<br>
                 <input class="pw" id="passwd" name="passwd" type="password" maxlength="30"><br><br>
@@ -37,8 +38,8 @@
 
             <!-- 선택 영역 두번째 -->
             <!-- name을 부여함으로 인하여 radio의 선택 가능한 것들을 하나의 그룹으로 묶어준다. -->
-            <input type="radio" class="radio" name="gender">&nbsp 남성
-            <input type="radio" class="radio" name="gender">&nbsp 여성
+            <input type="radio" class="radio" name="gender" id="gender1" value="1">&nbsp 남성
+            <input type="radio" class="radio" name="gender" id="gender2" value="2">&nbsp 여성
         </form>
         <br><br>
         <form>
@@ -53,6 +54,41 @@
 </body>
 <script>
 $(()=>{
+
+    $("#idCheck").click(()=>{
+        let userId = $("#userId").val().trim();
+        console.log(userId);
+
+        if (userId=="") {
+            alert("아이디를 입력하세요");
+            $("#userId").focus();
+            return;
+        }
+
+        $.ajax({
+            url:"/idCheck",
+            data:{userId, userId},
+            dataType:"json",
+            method:"post"
+        })
+        .done((res)=>{
+            console.log('!!!!! ' + res.not);
+            if (res.key == 'ok') {
+                alert(res.ok);
+                $("#userId").prop('disable', true);
+            } else if (res.key == 'not') {
+                alert(res.not);
+            }
+        })
+        .fail((res, status, error)=>{
+            console.log(res.not);
+            $("#userId").focus();
+            console.log(status);
+            console.log(error);
+        });
+    });
+
+
     $("#joinBtn").click(()=>{
         let userId = $("#userId").val().trim();
         let passwd = $("#passwd").val().trim();

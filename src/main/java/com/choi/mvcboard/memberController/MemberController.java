@@ -130,4 +130,24 @@ public class MemberController {
             return map;
         }
     }
+
+    @ResponseBody
+    @PostMapping("/idCheck")
+    public Map<String, String> idCheck(String userId) {
+        Map<String, String> map = new HashMap<>();
+        try {
+            int result = memberService.idCheck(userId);
+            System.out.println("idcheck controller : " + result);
+            if (result == 1)
+                map.put("ok", "사용 가능한 아이디입니다");
+            else if (result == -1) {
+                map.put("not", "이미 사용중인 아이디입니다");
+            }
+            return map;
+        } catch (Exception e) {
+            map.put("fail", "실패");
+            e.printStackTrace();
+            return map;
+        }
+    }
 }

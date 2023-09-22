@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 @Table(name = "member_tb")
 public class MemberEntity {
     @Id
-    @Column(length = 30)
+    @Column(length = 30, unique = true)
     private String userId;
     @Column(length = 30)
     private String passwd;
